@@ -8,6 +8,7 @@ const Profile = () => {
   const [mobile, setMobile] = useState('');
   const [address, setAddress] = useState('');
   const [remark, setRemark] = useState('');
+  const [profession, setProfession] = useState(''); // Profession state
 
   // State for holding existing profile data (for update)
   const [profiles, setProfiles] = useState([]);
@@ -29,6 +30,7 @@ const Profile = () => {
       mobile,
       address,
       remark,
+      profession, // Add profession to the new profile
     };
 
     const updatedProfiles = [...profiles, newProfile];
@@ -48,6 +50,7 @@ const Profile = () => {
     setMobile(profileToEdit.mobile);
     setAddress(profileToEdit.address);
     setRemark(profileToEdit.remark);
+    setProfession(profileToEdit.profession); // Set profession during edit
 
     // Remove the profile from the list for later update
     setProfiles(profiles.filter(profile => profile.id !== id));
@@ -68,6 +71,7 @@ const Profile = () => {
     setMobile('');
     setAddress('');
     setRemark('');
+    setProfession(''); // Reset profession
   };
 
   return (
@@ -142,6 +146,38 @@ const Profile = () => {
           ></textarea>
         </div>
 
+        {/* Profession Field */}
+        <div>
+          <label htmlFor="profession">Profession:</label>
+          <select
+            id="profession"
+            value={profession}
+            onChange={(e) => setProfession(e.target.value)}
+            required
+          >
+            <option value="">Select Profession</option>
+            <option value="farmer">Farmer</option>
+            <option value="middleman">Middleman</option>
+            <option value="driver">Driver</option>
+            <option value="coolie">Coolie</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        {/* Show a custom input box if 'Other' is selected for profession */}
+        {profession === 'other' && (
+          <div>
+            <label htmlFor="customProfession">Custom Profession:</label>
+            <input
+              type="text"
+              id="customProfession"
+              value={profession}
+              onChange={(e) => setProfession(e.target.value)}
+              required
+            />
+          </div>
+        )}
+
         <button type="submit">Save Profile</button>
       </form>
 
@@ -155,6 +191,7 @@ const Profile = () => {
             <strong>Mobile:</strong> {profile.mobile} <br />
             <strong>Address:</strong> {profile.address} <br />
             <strong>Remark:</strong> {profile.remark} <br />
+            <strong>Profession:</strong> {profile.profession} <br />
             <button onClick={() => handleEdit(profile.id)}>Edit</button>
             <button onClick={() => handleDelete(profile.id)}>Delete</button>
           </li>
